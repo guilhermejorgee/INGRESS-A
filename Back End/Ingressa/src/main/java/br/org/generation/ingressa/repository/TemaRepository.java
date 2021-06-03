@@ -9,6 +9,7 @@ import br.org.generation.ingressa.model.Tema;
 
 @Repository
 public interface TemaRepository extends JpaRepository <Tema, Long> {
-	public List<Tema> findAllByCargoContainingIgnoreCase(String cargo);
+	public List<Tema> findAllByAreaContainingIgnoreCase(String area);
+	public List<Tema> findAllByPalavraChaveContainingIgnoreCase(String palavrachave);
 }
 
