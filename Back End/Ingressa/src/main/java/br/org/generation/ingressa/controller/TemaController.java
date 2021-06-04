@@ -30,36 +30,35 @@ public class TemaController {
 	public ResponseEntity<List<Tema>> GetAll() {
 		return ResponseEntity.ok(repository.findAll());
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Tema> GetById(@PathVariable long id){
-		return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<Tema> GetById(@PathVariable long id) {
+		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
 	}
 
 	@GetMapping("/area/{area}")
 	public ResponseEntity<List<Tema>> GetByArea(@PathVariable String area) {
 		return ResponseEntity.ok(repository.findAllByAreaContainingIgnoreCase(area));
 	}
-	
+
 	@GetMapping("/palavrachave/{palavrachave}")
 	public ResponseEntity<List<Tema>> GetByPalavrachave(@PathVariable String palavrachave) {
 		return ResponseEntity.ok(repository.findAllByPalavraChaveContainingIgnoreCase(palavrachave));
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Tema> postTema (@RequestBody Tema tema){
+	public ResponseEntity<Tema> postTema(@RequestBody Tema tema) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema));
 	}
-	
+
 	@PutMapping
-	public ResponseEntity<Tema> putTema (@RequestBody Tema tema){
+	public ResponseEntity<Tema> putTema(@RequestBody Tema tema) {
 		return ResponseEntity.ok(repository.save(tema));
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
 		repository.deleteById(id);
 	}
-	
+
 }
