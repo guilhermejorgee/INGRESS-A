@@ -15,8 +15,13 @@ public interface PostagemRepository extends JpaRepository <Postagem, Long> {
 	public List<Postagem> findAllByCargoContainingIgnoreCase(String cargo);
 	public List<Postagem> findAllByRegiaoContainingIgnoreCase(String regiao);
 	
+<<<<<<< HEAD
 	// 
 	
 	@Query(value = "select count(usuario_id) from tb_postagem where cargo is not null && usuario_id = :id", nativeQuery = true)
+=======
+	
+	@Query(value = "select count(usuario_id) from tb_postagem where usuario_id = :id", nativeQuery = true)
+>>>>>>> 8fa961b1d8accc64f46bc9dd50e63fa68aafe011
 	public int countPosts(@Param("id") long id);
 }
