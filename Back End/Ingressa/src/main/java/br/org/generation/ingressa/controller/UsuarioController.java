@@ -1,11 +1,13 @@
 package br.org.generation.ingressa.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+
 
 	@PostMapping("/logar")
 	public ResponseEntity<UserLogin> Autentication(@RequestBody Optional<UserLogin> user) {
@@ -34,6 +38,13 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> Post(@RequestBody Usuario usuario) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.CadastrarUsuario(usuario));
 
+	}
+	
+	@GetMapping("/tops")
+	public ResponseEntity<List<Usuario>> getTopTopics() {
+		
+		return ResponseEntity.ok(usuarioService.maisPostagens());
+	
 	}
 
 }
