@@ -1,5 +1,6 @@
 package br.org.generation.ingressa.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -31,7 +34,11 @@ public class Usuario {
 	private String email;
 	
 	@NotNull
-	@Size(min = 8, max = 20)
+	@DateTimeFormat
+	private LocalDate dataAniversario;
+	
+	@NotNull
+	@Size(min = 8)
 	private String senha;
 	
 	@NotNull
@@ -39,6 +46,7 @@ public class Usuario {
 	
 	@Size(min = 5, max = 255)
 	private String descSobre;
+	
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("usuario")
@@ -90,6 +98,14 @@ public class Usuario {
 
 	public void setDescSobre(String descSobre) {
 		this.descSobre = descSobre;
+	}
+
+	public LocalDate getDataAniversario() {
+		return dataAniversario;
+	}
+
+	public void setDataAniversario(LocalDate dataAniversario) {
+		this.dataAniversario = dataAniversario;
 	}
 
 }

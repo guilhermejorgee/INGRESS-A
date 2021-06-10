@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,20 +27,21 @@ public class Postagem {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataDePostagem = new java.sql.Date(System.currentTimeMillis());
 
-	@NotNull
 	private String regiao;
 
-	@NotNull
+	
 	private String cargo;
 
-	@NotNull
+	@NotNull(message = "Atributo Obrigatório")
 	private String titulo;
 
 	@Column(columnDefinition = "text")
-	@NotNull
+	@NotNull(message = "Atributo Obrigatório")
 	private String texto;
 
-	private long qtCurtidas;
+	@PositiveOrZero
+	private int qtCurtidas;
+	
 
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
@@ -97,11 +99,11 @@ public class Postagem {
 		this.texto = texto;
 	}
 
-	public long getQtCurtidas() {
+	public int getQtCurtidas() {
 		return qtCurtidas;
 	}
 
-	public void setQtCurtidas(long qtCurtidas) {
+	public void setQtCurtidas(int qtCurtidas) {
 		this.qtCurtidas = qtCurtidas;
 	}
 
