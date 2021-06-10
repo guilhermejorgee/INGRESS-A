@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -51,6 +52,19 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
+	
+	@Transient
+	private int qtdPostagem;
+	
+	
+
+	public int getQtdPostagem() {
+		return qtdPostagem;
+	}
+
+	public void setQtdPostagem(int qtdPostagem) {
+		this.qtdPostagem = qtdPostagem;
+	}
 
 	public long getId() {
 		return id;
