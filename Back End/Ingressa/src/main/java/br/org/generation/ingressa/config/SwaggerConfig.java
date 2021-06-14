@@ -39,7 +39,7 @@ public class SwaggerConfig {
 	}
 
 	private static Contact contact() {
-		return new Contact("Gonzales Walisson", "https://github.com/walisson-gonz", "walisson.gonzales@gmail.com");
+		return new Contact("Gonzales Walisson", "https://linkme.bio/ingressa/", "walisson.gonzales@gmail.com");
 	}
 
 	private static List<Response> responseMessageForGET() {
