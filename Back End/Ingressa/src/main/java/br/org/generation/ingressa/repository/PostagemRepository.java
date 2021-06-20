@@ -17,6 +17,17 @@ public interface PostagemRepository extends JpaRepository <Postagem, Long> {
 	
 	// 
 	
-	@Query(value = "select count(usuario_id) from tb_postagem where cargo is not null && usuario_id = :id", nativeQuery = true)
+	@Query(value = "select * from tb_postagem where cargo is null", nativeQuery = true)
+	public List<Postagem> postagensComuns(); //Exibir todas as postagens comuns
+	
+	@Query(value = "select * from tb_postagem where cargo is not null", nativeQuery = true)
+	public List<Postagem> postagensVagas(); //Exibir todas as postagens de vagas
+	
+	@Query(value = "select count(usuario_id) from tb_postagem where cargo is not null and usuario_id = :id", nativeQuery = true)
 	public int countPosts(@Param("id") long id);
+	/*Essa pesquisa serve para separar as postagens de emprego e também verificar
+	qual o usuário fez a postagem, para contabilizar no ranking*/
+	
+	@Query(value = "select * from tb_postagem where tema_id = 1", nativeQuery = true)
+	public List<Postagem> pesquisaPostagensEmAlta(); //Exibir todas as postagens de vagas
 }

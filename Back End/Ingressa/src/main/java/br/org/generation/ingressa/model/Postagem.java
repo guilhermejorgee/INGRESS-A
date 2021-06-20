@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,15 +33,20 @@ public class Postagem {
 	
 	private String cargo;
 
-	@NotNull(message = "Atributo Obrigatório")
+	@NotNull(message = "Título Obrigatório")
+	@Size(min = 4)
 	private String titulo;
 
 	@Column(columnDefinition = "text")
-	@NotNull(message = "Atributo Obrigatório")
+	@NotNull(message = "Texto Obrigatório")
+	@Size(min = 10)
 	private String texto;
+	
+	
+	private String midia;
 
 	@PositiveOrZero
-	private int qtCurtidas;
+	private Integer qtCurtidas;
 	
 
 	@ManyToOne
@@ -97,13 +103,22 @@ public class Postagem {
 
 	public void setTexto(String texto) {
 		this.texto = texto;
+
+	}
+	
+	public String getMidia() {
+		return midia;
 	}
 
-	public int getQtCurtidas() {
+	public void setMidia(String midia) {
+		this.midia = midia;
+	}
+
+	public Integer getQtCurtidas() {
 		return qtCurtidas;
 	}
 
-	public void setQtCurtidas(int qtCurtidas) {
+	public void setQtCurtidas(Integer qtCurtidas) {
 		this.qtCurtidas = qtCurtidas;
 	}
 
@@ -114,7 +129,7 @@ public class Postagem {
 	public void setTema(Tema tema) {
 		this.tema = tema;
 	}
-
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}

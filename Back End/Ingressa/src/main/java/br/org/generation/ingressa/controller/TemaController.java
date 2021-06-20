@@ -45,6 +45,11 @@ public class TemaController {
 	public ResponseEntity<List<Tema>> GetByPalavrachave(@PathVariable String palavrachave) {
 		return ResponseEntity.ok(repository.findAllByPalavraChaveContainingIgnoreCase(palavrachave));
 	}
+	
+	@GetMapping("/areaoupalavrachave/{pesquisa}")
+	public ResponseEntity<List<Tema>> GetByPalavrachaveOuArea(@PathVariable String pesquisa) {
+		return ResponseEntity.ok(repository.findAllByAreaContainingIgnoreCaseOrPalavraChaveContainingIgnoreCase(pesquisa, pesquisa));
+	}
 
 	@PostMapping
 	public ResponseEntity<Tema> postTema(@RequestBody Tema tema) {
