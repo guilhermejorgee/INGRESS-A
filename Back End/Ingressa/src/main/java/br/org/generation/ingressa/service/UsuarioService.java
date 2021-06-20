@@ -28,19 +28,23 @@ public class UsuarioService {
 	private PostagemRepository postagemRepository;
 
 	public Usuario CadastrarUsuario(Usuario usuario) {
+		
 		if(repository.findByEmail(usuario.getEmail()).isPresent()) {
             return null;
 		}
+		
+		int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
+
+		if(idade < 14)
+			return null;
+		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		String senhaEncoder = encoder.encode(usuario.getSenha());
 		
 		usuario.setSenha(senhaEncoder);
 		
-		 int idade = Period.between(usuario.getDataAniversario(), LocalDate.now()).getYears();
 
-	        if(idade < 14)
-	            return null;
 		
 		return repository.save(usuario);
 		
@@ -72,7 +76,55 @@ public class UsuarioService {
 		return null;
 	}
 	
-	public List<Usuario> maisPostagens(){
+	public Optional<Usuario> atualizarUsuario(Usuario usuario){
+		
+		Optional<Usuario> usuarioBase = repository.findById(usuario.getId());
+		
+		if(usuario.getEmail() == null) {
+			
+			usuario.setEmail(usuarioBase.get().getEmail());
+		}
+		else {		
+			
+			if(repository.findByEmail(usuario.getEmail()).isPresent()) {
+				return null;
+			}
+		}
+		
+		if(usuario.getNome() == null) {
+			usuario.setNome(usuarioBase.get().getNome());
+		}
+		
+		if(usuario.getSenha() == null) {
+			usuario.setSenha(usuarioBase.get().getSenha());
+		}
+		else {
+		
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			String senhaEncoder = encoder.encode(usuario.getSenha());
+
+			usuario.setSenha(senhaEncoder);
+		}
+			
+		if(usuario.getDataNascimento() == null) {
+			usuario.setDataNascimento(usuarioBase.get().getDataNascimento());
+		}
+		if(usuario.isUsuarioEmpregador() == null) {
+			usuario.setUsuarioEmpregador(usuarioBase.get().isUsuarioEmpregador());
+		}
+		if(usuario.getDescSobre() == null) {
+			usuario.setDescSobre(usuarioBase.get().getDescSobre());
+		}
+		if(usuario.getFotoPerfil() == null) {
+			usuario.setFotoPerfil(usuarioBase.get().getFotoPerfil());
+		}
+				
+		
+		return Optional.of(repository.save(usuario));
+
+	}
+	
+	public List<Usuario> maiorQtdDePostagens(){
 		
 		List<Usuario> usuarios = repository.findByUsuarioEmpregador(true);
 		

@@ -10,13 +10,14 @@ import org.springframework.web.servlet.ModelAndView;
 @SpringBootApplication
 @RestController
 @RequestMapping("/")
-public class IngressAApplication {
+public class IngressaApplication {
+	
 	@GetMapping
 	public ModelAndView swaggerUi() {
 		return new ModelAndView("redirect:/swagger-ui/");
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(IngressAApplication.class, args);
+		SpringApplication.run(IngressaApplication.class, args);
 	}
 }

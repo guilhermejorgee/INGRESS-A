@@ -28,6 +28,7 @@ public class Usuario {
 	private long id;
 	
 	@NotNull
+	@Size(min = 3)
 	private String nome;
 	
 	@NotNull
@@ -35,28 +36,46 @@ public class Usuario {
 	private String email;
 	
 	@NotNull
-	@DateTimeFormat
-	private LocalDate dataAniversario;
+	@DateTimeFormat(pattern = "yyyy.MM.dd")
+	private LocalDate dataNascimento;
 	
 	@NotNull
 	@Size(min = 8)
 	private String senha;
 	
 	@NotNull
-	private boolean usuarioEmpregador;
+	private Boolean usuarioEmpregador;
+
 	
-	@Size(min = 5, max = 255)
+	@Size(max = 255)
 	private String descSobre;
 	
-	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("usuario")
-	private List<Postagem> postagem;
+	private String fotoPerfil;
 	
 	@Transient
 	private int qtdPostagem;
 	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("usuario")
+	private List<Postagem> postagem;
+		
 	
+	
+	public String getFotoPerfil() {
+		return fotoPerfil;
+	}
+
+	public void setFotoPerfil(String fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
+	}
+
+	public List<Postagem> getPostagem() {
+		return postagem;
+	}
+
+	public void setPostagem(List<Postagem> postagem) {
+		this.postagem = postagem;
+	}	
 
 	public int getQtdPostagem() {
 		return qtdPostagem;
@@ -98,11 +117,12 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public boolean isUsuarioEmpregador() {
+
+	public Boolean isUsuarioEmpregador() {
 		return usuarioEmpregador;
 	}
 
-	public void setUsuarioEmpregador(boolean usuarioEmpregador) {
+	public void setUsuarioEmpregador(Boolean usuarioEmpregador) {
 		this.usuarioEmpregador = usuarioEmpregador;
 	}
 
@@ -114,12 +134,12 @@ public class Usuario {
 		this.descSobre = descSobre;
 	}
 
-	public LocalDate getDataAniversario() {
-		return dataAniversario;
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
 	}
 
-	public void setDataAniversario(LocalDate dataAniversario) {
-		this.dataAniversario = dataAniversario;
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 }
