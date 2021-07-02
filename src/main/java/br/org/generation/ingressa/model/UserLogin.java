@@ -2,6 +2,8 @@ package br.org.generation.ingressa.model;
 
 public class UserLogin {
 	
+	private long id;
+	
 	private String nome;
 	
 	private String email;
@@ -9,6 +11,20 @@ public class UserLogin {
 	private String senha;
 	
 	private String token;
+	
+	private String fotoPerfil;
+	
+	private boolean usuarioEmpregador;
+	
+	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return nome;
@@ -41,5 +57,25 @@ public class UserLogin {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public String getFotoPerfil() {
+		return fotoPerfil;
+	}
+
+	public void setFotoPerfil(String fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
+	}
+
+	public boolean isUsuarioEmpregador() {
+		return usuarioEmpregador;
+	}
+
+	public void setUsuarioEmpregador(boolean usuarioEmpregador) {
+		this.usuarioEmpregador = usuarioEmpregador;
+	}
+	
+	
+	
+	
 
 }

@@ -32,6 +32,12 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioRepository repository;
 	
+	
+	@GetMapping
+	public ResponseEntity<List<Usuario>> todosUsuarios(){
+		return ResponseEntity.ok(repository.findAll());
+	}
+	
 
 
 	@PostMapping("/logar")
@@ -43,6 +49,8 @@ public class UsuarioController {
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
+		if(usuarioService.CadastrarUsuario(usuario) == null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.CadastrarUsuario(usuario));
 
 	}

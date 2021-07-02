@@ -65,8 +65,16 @@ public class UsuarioService {
 				String authHeader = "Basic " + new String(encodedAuth);
 
 				user.get().setToken(authHeader);
+				
+				user.get().setId(usuario.get().getId());
 
 				user.get().setNome(usuario.get().getNome());
+				
+				user.get().setFotoPerfil(usuario.get().getFotoPerfil());
+				
+				user.get().setUsuarioEmpregador(usuario.get().isUsuarioEmpregador());
+				
+				
 				
 				user.get().setSenha(null); // Não retorna a senha no console!
 				
