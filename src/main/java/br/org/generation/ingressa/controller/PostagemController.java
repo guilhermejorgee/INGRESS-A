@@ -21,7 +21,7 @@ import br.org.generation.ingressa.service.PostagemService;
 
 @RestController
 @RequestMapping("/postagens")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
 
 	@Autowired
