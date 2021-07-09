@@ -14,6 +14,10 @@ public class UserLogin {
 	
 	private String fotoPerfil;
 	
+	private String telefone;
+	
+	private String empresaAtual;
+	
 	private boolean usuarioEmpregador;
 	
 	
@@ -72,6 +76,22 @@ public class UserLogin {
 
 	public void setUsuarioEmpregador(boolean usuarioEmpregador) {
 		this.usuarioEmpregador = usuarioEmpregador;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getEmpresaAtual() {
+		return empresaAtual;
+	}
+
+	public void setEmpresaAtual(String empresaAtual) {
+		this.empresaAtual = empresaAtual;
 	}
 	
 	

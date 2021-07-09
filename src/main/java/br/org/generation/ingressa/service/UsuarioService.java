@@ -3,8 +3,11 @@ package br.org.generation.ingressa.service;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.org.generation.ingressa.model.Postagem;
 import br.org.generation.ingressa.model.UserLogin;
 import br.org.generation.ingressa.model.Usuario;
 import br.org.generation.ingressa.repository.PostagemRepository;
@@ -31,6 +35,10 @@ public class UsuarioService {
 		
 		if(repository.findByEmail(usuario.getEmail()).isPresent()) {
             return null;
+		}
+		
+		if(usuario.getUsuarioEmpregador() == false && !(usuario.getEmpresaAtual() == null)) {
+			return null;
 		}
 		
 		int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
@@ -71,10 +79,12 @@ public class UsuarioService {
 				user.get().setNome(usuario.get().getNome());
 				
 				user.get().setFotoPerfil(usuario.get().getFotoPerfil());
+						
+				user.get().setUsuarioEmpregador(usuario.get().getUsuarioEmpregador());
 				
-				user.get().setUsuarioEmpregador(usuario.get().isUsuarioEmpregador());
+				user.get().setEmpresaAtual(usuario.get().getEmpresaAtual());
 				
-				
+				user.get().setTelefone(usuario.get().getTelefone());
 				
 				user.get().setSenha(null); // Não retorna a senha no console!
 				
@@ -84,10 +94,14 @@ public class UsuarioService {
 		return null;
 	}
 	
-	public Optional<Usuario> atualizarUsuario(Usuario usuario){
+	public Usuario atualizarUsuario(Usuario usuario){
 		
 		Optional<Usuario> usuarioBase = repository.findById(usuario.getId());
 		
+		if(usuario.getId() == usuarioBase.get().getId() || usuario.getUsuarioAdmin() == true) {
+		
+		usuario.setUsuarioAdmin(usuarioBase.get().getUsuarioAdmin());
+					
 		if(usuario.getEmail() == null) {
 			
 			usuario.setEmail(usuarioBase.get().getEmail());
@@ -117,24 +131,35 @@ public class UsuarioService {
 		if(usuario.getDataNascimento() == null) {
 			usuario.setDataNascimento(usuarioBase.get().getDataNascimento());
 		}
-		if(usuario.isUsuarioEmpregador() == null) {
-			usuario.setUsuarioEmpregador(usuarioBase.get().isUsuarioEmpregador());
+		if(usuario.getUsuarioEmpregador() == null) {
+			usuario.setUsuarioEmpregador(usuarioBase.get().getUsuarioEmpregador());
 		}
 		if(usuario.getDescSobre() == null) {
 			usuario.setDescSobre(usuarioBase.get().getDescSobre());
 		}
+		if(usuario.getTelefone() == null) {
+			usuario.setTelefone(usuarioBase.get().getTelefone());
+		}		
 		if(usuario.getFotoPerfil() == null) {
 			usuario.setFotoPerfil(usuarioBase.get().getFotoPerfil());
 		}
-				
+		if(usuario.getEmpresaAtual() == null) {
+			usuario.setEmpresaAtual(usuarioBase.get().getEmpresaAtual());
+		}
+					
+		return repository.save(usuario);
 		
-		return Optional.of(repository.save(usuario));
+		}
+		
+		return null;
+		
 
 	}
 	
 	public List<Usuario> maiorQtdDePostagens(){
 		
 		List<Usuario> usuarios = repository.findByUsuarioEmpregador(true);
+		
 		
 		for (Usuario usuario : usuarios) {
 			
@@ -147,5 +172,55 @@ public class UsuarioService {
 		return usuarios;
 	}
 	
+	public LocalDate convertToLocalDate(Date dateToConvert) {
+	    return LocalDate.ofInstant(
+	      dateToConvert.toInstant(), ZoneId.systemDefault());
+	}
+	
+	
+	public List<Usuario> maiorQtdDePostagensMes(){
+		
+		
+		List<Usuario> usuarios = repository.findByUsuarioEmpregador(true);
+		
+		List<Postagem> postagens = postagemRepository.postagensVagas();
+		
+		List<Postagem> postagensMes = new ArrayList<Postagem>();
+		
+		List<Usuario> empregadoresMes = new ArrayList<Usuario>();
+		
+		
+		for (Usuario usuario : usuarios) {
+			
+			usuario.setQtdPostagem(postagemRepository.countPosts(usuario.getId()));
+		}
+		
+		for (Postagem postagem: postagens) {
+			
+			Date dataPostagem =  postagem.getDataDePostagem();
+			
+			
+			int data = Period.between(convertToLocalDate(dataPostagem), LocalDate.now()).getDays();
+			if(data < 30) {
+				postagensMes.add(postagem);
+		}
+			
+		}
+		for (Postagem postagem: postagensMes) {
+			
+			
+			Usuario user = repository.findById(postagem.getUsuario().getId()).orElse(null);
+			
+			empregadoresMes.add(user);
+			
+		}
+		
+		Collections.sort(empregadoresMes, Collections.reverseOrder(Comparator.comparing(Usuario::getQtdPostagem)));
+			
+			
+		
+		return empregadoresMes;
+	
+}
 	
 }

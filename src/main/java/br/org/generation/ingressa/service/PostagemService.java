@@ -1,7 +1,12 @@
 package br.org.generation.ingressa.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -33,7 +38,7 @@ public class PostagemService {
 		postagem.setQtCurtidas(0);
 			
 		
-		if(usuario.get().isUsuarioEmpregador() == true) {
+		if(usuario.get().getUsuarioEmpregador() == true) {
 			return postagemRepository.save(postagem);
 		}
 		else {
@@ -56,9 +61,11 @@ public class PostagemService {
 	
 	if(postagemBase.isPresent()) {
 		
-		if(postagemBase.get().getUsuario().getId() == postagem.getUsuario().getId()) {
+		if((postagemBase.get().getUsuario().getId() == postagem.getUsuario().getId()) || postagem.getUsuario().getUsuarioAdmin() == true) {
 			
 			postagem.setDataDePostagem(postagemBase.get().getDataDePostagem());	
+			
+			postagem.setUsuario(postagemBase.get().getUsuario());
 			
 			if(postagem.getQtCurtidas() == null) {
 				postagem.setQtCurtidas(postagemBase.get().getQtCurtidas());
@@ -72,7 +79,7 @@ public class PostagemService {
 				postagem.setRegiao(postagemBase.get().getRegiao());
 			}
 			else {
-				if(usuario.get().isUsuarioEmpregador() == true) {
+				if(usuario.get().getUsuarioEmpregador() == true || usuario.get().getUsuarioAdmin() == true) {
 					postagem.setRegiao(postagem.getRegiao());
 				}
 				else {
@@ -83,7 +90,7 @@ public class PostagemService {
 				postagem.setCargo(postagemBase.get().getCargo());
 			}
 			else {
-				if(usuario.get().isUsuarioEmpregador() == true) {
+				if(usuario.get().getUsuarioEmpregador() == true || usuario.get().getUsuarioAdmin() == true) {
 					postagem.setCargo(postagem.getCargo());
 				}
 				else {
@@ -148,7 +155,40 @@ public class PostagemService {
 		return (postagemRepository.save(postagem));
 	}
 	
-	public List<Postagem> postagensEmAlta() {
+	public LocalDate convertToLocalDate(Date dateToConvert) {
+	    return LocalDate.ofInstant(
+	      dateToConvert.toInstant(), ZoneId.systemDefault());
+	}
+	
+	public List<Postagem> postagensEmAltaSemana(){
+		
+		
+		List<Postagem> postagens = postagemRepository.postagensComuns();
+		
+		List<Postagem> postagensSemana = new ArrayList<Postagem>();
+		
+		
+		for (Postagem postagem : postagens) {
+			
+			Date dataPostagem =  postagem.getDataDePostagem();
+					
+								
+			int data = Period.between(convertToLocalDate(dataPostagem), LocalDate.now()).getDays();
+			if(data < 7) {
+				postagensSemana.add(postagem);
+			}
+				
+			
+		}
+		
+		Collections.sort(postagensSemana, Collections.reverseOrder(Comparator.comparing(Postagem::getQtCurtidas)));
+		
+
+		return postagensSemana;
+	}
+	
+	
+/*	public List<Postagem> postagensEmAlta() {
 		
 		List<Postagem> postagens = postagemRepository.pesquisaPostagensEmAlta();
 		
@@ -156,7 +196,7 @@ public class PostagemService {
 		
 		return postagens;
 		
-	}
+	}*/
 
 	private Postagem buscarPostagemPeloId(Long id) {
 
@@ -171,5 +211,8 @@ public class PostagemService {
 
 		
 	}
+	
+	
+
 	
 }

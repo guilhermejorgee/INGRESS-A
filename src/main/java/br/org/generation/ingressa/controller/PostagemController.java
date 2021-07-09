@@ -64,6 +64,11 @@ public class PostagemController {
 	public ResponseEntity<List<Postagem>> BuscarPorCargo(@PathVariable String cargo) {
 		return ResponseEntity.ok(repository.findAllByCargoContainingIgnoreCase(cargo));
 	}
+	
+	@GetMapping("usuario/{id}")
+	public ResponseEntity<List<Postagem>> postagemPorId(@PathVariable long id){
+		return ResponseEntity.ok(repository.postagemPorIdUsuario(id));
+	}
 
 	@PostMapping
 	public ResponseEntity<Postagem> fazerPostagem(@RequestBody Postagem postagem) {
@@ -93,10 +98,17 @@ public class PostagemController {
 
 	}
 	
-	@GetMapping("/emalta")
+/*	@GetMapping("/emalta")
 	public ResponseEntity<List<Postagem>> postagemAlta() {
 
 	return ResponseEntity.status(HttpStatus.OK).body(postagemService.postagensEmAlta());
+
+	}*/
+	
+	@GetMapping("/emaltasemana")
+	public ResponseEntity<List<Postagem>> postagemAltaSemana() {
+
+	return ResponseEntity.status(HttpStatus.OK).body(postagemService.postagensEmAltaSemana());
 
 	}
 

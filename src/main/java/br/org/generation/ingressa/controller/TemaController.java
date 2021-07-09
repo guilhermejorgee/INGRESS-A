@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.generation.ingressa.model.Tema;
 import br.org.generation.ingressa.repository.TemaRepository;
+import br.org.generation.ingressa.service.TemaService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -25,31 +26,53 @@ public class TemaController {
 
 	@Autowired
 	private TemaRepository repository;
+	
+	@Autowired
+	private TemaService temaRepository;
 
 	@GetMapping
-	public ResponseEntity<List<Tema>> GetAll() {
+	public ResponseEntity<List<Tema>> PesquisaTodosOsTemas() {
 		return ResponseEntity.ok(repository.findAll());
+	}
+	
+	@GetMapping("/vagas")
+	public ResponseEntity<List<Tema>> PesquisaTodosTemasVagas() {
+		return ResponseEntity.ok(repository.pesquisaDeTemasDeVagas());
+	}
+	
+	@GetMapping("/comuns")
+	public ResponseEntity<List<Tema>> PesquisaTodosTemasComuns() {
+		return ResponseEntity.ok(repository.pesquisaDeTemasDeComuns());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Tema> GetById(@PathVariable long id) {
 		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
 	}
+	
+	
 
-	@GetMapping("/area/{area}")
-	public ResponseEntity<List<Tema>> GetByArea(@PathVariable String area) {
-		return ResponseEntity.ok(repository.findAllByAreaContainingIgnoreCase(area));
-	}
-
-	@GetMapping("/palavrachave/{palavrachave}")
-	public ResponseEntity<List<Tema>> GetByPalavrachave(@PathVariable String palavrachave) {
-		return ResponseEntity.ok(repository.findAllByPalavraChaveContainingIgnoreCase(palavrachave));
+/*	@GetMapping("/areavagas/{area}")
+	public ResponseEntity<List<Tema>> PesquisarPorAreaVagas(@PathVariable String area) {
+		return ResponseEntity.ok(repository.pesquisaDeAreasDeVagasEPalavraChave(area));
 	}
 	
-	@GetMapping("/areaoupalavrachave/{pesquisa}")
+	@GetMapping("/areacomuns/{area}")
+	public ResponseEntity<List<Tema>> PesquisarPorAreaComuns(@PathVariable String area) {
+		return ResponseEntity.ok(repository.pesquisaDeAreasDeComunsEPalavraChave(area));
+	}
+	*/
+	
+
+/*	@GetMapping("/palavrachave/{palavrachave}")
+	public ResponseEntity<List<Tema>> GetByPalavrachave(@PathVariable String palavrachave) {
+		return ResponseEntity.ok(repository.findAllByPalavraChaveContainingIgnoreCase(palavrachave));
+	}*/
+	
+/*	@GetMapping("/areaoupalavrachave/{pesquisa}")
 	public ResponseEntity<List<Tema>> GetByPalavrachaveOuArea(@PathVariable String pesquisa) {
 		return ResponseEntity.ok(repository.findAllByAreaContainingIgnoreCaseOrPalavraChaveContainingIgnoreCase(pesquisa, pesquisa));
-	}
+	}*/
 
 	@PostMapping
 	public ResponseEntity<Tema> postTema(@RequestBody Tema tema) {
@@ -57,8 +80,8 @@ public class TemaController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Tema> putTema(@RequestBody Tema tema) {
-		return ResponseEntity.ok(repository.save(tema));
+	public ResponseEntity<Tema> atualizacaoDoTema(@RequestBody Tema tema) {
+		return ResponseEntity.status(HttpStatus.OK).body(temaRepository.atualizarTema(tema));
 	}
 
 	@DeleteMapping("/{id}")
