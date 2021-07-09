@@ -25,10 +25,9 @@ public class Tema {
 	private String area;
 
 	@Size(max = 100)
-	private String descricao;
-
-	@Size(max = 100)
 	private String palavraChave;
+	
+	private Boolean tipoTema;
 	
 	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("tema")
@@ -50,13 +49,6 @@ public class Tema {
 		this.area = area;
 	}
 
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
 
 	public String getPalavraChave() {
 		return palavraChave;
@@ -65,4 +57,22 @@ public class Tema {
 	public void setPalavraChave(String palavraChave) {
 		this.palavraChave = palavraChave;
 	}
+
+	public Boolean getTipoTema() {
+		return tipoTema;
+	}
+
+	public void setTipoTema(Boolean tipoTema) {
+		this.tipoTema = tipoTema;
+	}
+
+	public List<Postagem> getPostagem() {
+		return postagem;
+	}
+
+	public void setPostagem(List<Postagem> postagem) {
+		this.postagem = postagem;
+	}
+	
+	
 }

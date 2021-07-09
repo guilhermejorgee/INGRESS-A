@@ -50,10 +50,19 @@ public class Usuario {
 	@Size(max = 255)
 	private String descSobre;
 	
+	@Size(max = 11)
+	private String telefone;
+	
 	private String fotoPerfil;
+	
+	private Boolean usuarioAdmin;
+	
+	@Size(max = 20)
+	private String empresaAtual;
 	
 	@Transient
 	private int qtdPostagem;
+	
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("usuario")
@@ -118,7 +127,7 @@ public class Usuario {
 	}
 
 
-	public Boolean isUsuarioEmpregador() {
+	public Boolean getUsuarioEmpregador() {
 		return usuarioEmpregador;
 	}
 
@@ -133,6 +142,15 @@ public class Usuario {
 	public void setDescSobre(String descSobre) {
 		this.descSobre = descSobre;
 	}
+	
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
 
 	public LocalDate getDataNascimento() {
 		return dataNascimento;
@@ -141,5 +159,27 @@ public class Usuario {
 	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
+
+	public Boolean getUsuarioAdmin() {
+		return usuarioAdmin;
+	}
+
+	public void setUsuarioAdmin(Boolean usuarioAdmin) {
+		this.usuarioAdmin = usuarioAdmin;
+	}
+
+	public String getEmpresaAtual() {
+		return empresaAtual;
+	}
+
+	public void setEmpresaAtual(String empresaAtual) {
+		this.empresaAtual = empresaAtual;
+	}
+	
+	
+
+
+	
+	
 
 }

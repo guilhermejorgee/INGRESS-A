@@ -38,6 +38,16 @@ public class UsuarioController {
 		return ResponseEntity.ok(repository.findAll());
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<Usuario> GetById(@PathVariable long id) {
+		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping("/usuario/{usuario}")
+	public ResponseEntity<Usuario> pesquisaPorUsuario(@PathVariable String usuario){
+		return repository.findByEmailAndNomeContainingIgnoreCase(usuario, usuario).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+	}
+	
 
 
 	@PostMapping("/logar")
@@ -62,14 +72,18 @@ public class UsuarioController {
 	
 	}
 	
-	@PutMapping("/alterar")
+	@GetMapping("/topsmes")
+	public ResponseEntity<List<Usuario>> topEmpregadoresMes() {
+		
+		return ResponseEntity.ok(usuarioService.maiorQtdDePostagensMes());
+	
+	}
+	
+	@PutMapping
 	public ResponseEntity<Usuario> Put(@RequestBody Usuario usuario){
-		Optional<Usuario> user = usuarioService.atualizarUsuario(usuario);
-		try {
-			return ResponseEntity.ok(user.get());
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		if(usuarioService.atualizarUsuario(usuario) == null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.atualizarUsuario(usuario));
 	}
 	
 	@DeleteMapping("/{id}")
