@@ -81,9 +81,12 @@ public class UsuarioController {
 	
 	@PutMapping
 	public ResponseEntity<Usuario> Put(@RequestBody Usuario usuario){
-		if(usuarioService.atualizarUsuario(usuario) == null)
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.atualizarUsuario(usuario));
+		Optional<Usuario> user = usuarioService.atualizarUsuario(usuario);
+		try {
+			return ResponseEntity.ok(user.get());
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
 	@DeleteMapping("/{id}")
