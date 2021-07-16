@@ -31,11 +31,21 @@ public class PostagemService {
 	private UsuarioRepository usuarioRepository;
 	
 	
+	
+	
+	
 	public Postagem verificacaoPostagem(Postagem postagem) {
 		
 		Optional<Usuario> usuario = usuarioRepository.findById(postagem.getUsuario().getId());
 		
 		postagem.setQtCurtidas(0);
+		
+		String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
+		String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
+		String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
+		String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
+		postagem.setTexto(postagemComDestqueDois);
+		
 			
 		
 		if(usuario.get().getUsuarioEmpregador() == true) {
@@ -60,6 +70,8 @@ public class PostagemService {
 	
 	
 	if(postagemBase.isPresent()) {
+		
+		
 		
 		if((postagemBase.get().getUsuario().getId() == postagem.getUsuario().getId()) || postagem.getUsuario().getUsuarioAdmin() == true) {
 			
@@ -103,13 +115,17 @@ public class PostagemService {
 			if(postagem.getTexto() == null) {
 				postagem.setTexto(postagemBase.get().getTexto());
 			}
+			else {
+				String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
+				String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
+				String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
+				String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
+				postagem.setTexto(postagemComDestqueDois);
+			}
 			if(postagem.getMidia() == null) {
 				postagem.setMidia(postagemBase.get().getMidia());
 			}
 							
-			if(postagem.getTema() == null) {							
-				postagem.setTema(postagemBase.get().getTema());
-			}
 			
 			return postagemRepository.save(postagem);
 						

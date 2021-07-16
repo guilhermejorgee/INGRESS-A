@@ -3,6 +3,7 @@ package br.org.generation.ingressa.controller;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,9 @@ import br.org.generation.ingressa.model.Usuario;
 import br.org.generation.ingressa.repository.UsuarioRepository;
 import br.org.generation.ingressa.service.UsuarioService;
 
+@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
 
 	@Autowired
@@ -92,6 +93,26 @@ public class UsuarioController {
 	@DeleteMapping("/{id}")
 	public void deletarUsuario(@PathVariable long id){
 		repository.deleteById(id);
+	}
+	
+	@PutMapping("/adicionarcurtida/{idUsuario}/{idPostagem}")
+	public ResponseEntity<Usuario> AdiocionarCurtidaPostagem(@PathVariable Long idUsuario, @PathVariable Long idPostagem){
+		Optional<Usuario> user = usuarioService.adicionarCurtidasDoUsuario(idUsuario, idPostagem);
+		try {
+			return ResponseEntity.ok(user.get());
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
+	
+	@PutMapping("/removercurtida/{idUsuario}/{idPostagem}")
+	public ResponseEntity<Usuario> removerCurtidaPostagem(@PathVariable Long idUsuario, @PathVariable Long idPostagem){
+		Optional<Usuario> user = usuarioService.removerCurtidasDoUsuario(idUsuario, idPostagem);
+		try {
+			return ResponseEntity.ok(user.get());
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 }

@@ -12,25 +12,28 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "tb_tema")
 public class Tema {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@NotNull
 	@Size(max = 100)
 	private String area;
 
 	@Size(max = 100)
 	private String palavraChave;
 	
+	@NotNull
 	private Boolean tipoTema;
 	
-	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("tema")
+	@OneToMany(mappedBy = "tema", cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
+	@JsonIgnoreProperties(value = "tema", allowSetters = true)
 	private List<Postagem> postagem;
 
 	public long getId() {

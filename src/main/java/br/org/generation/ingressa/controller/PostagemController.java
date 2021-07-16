@@ -19,9 +19,9 @@ import br.org.generation.ingressa.model.Postagem;
 import br.org.generation.ingressa.repository.PostagemRepository;
 import br.org.generation.ingressa.service.PostagemService;
 
+@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RestController
 @RequestMapping("/postagens")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
 
 	@Autowired

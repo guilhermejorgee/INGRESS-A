@@ -2,12 +2,16 @@ package br.org.generation.ingressa.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -24,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Usuario {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@NotNull
@@ -64,9 +68,17 @@ public class Usuario {
 	private int qtdPostagem;
 	
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties("usuario")
+	@OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
+	@JsonIgnoreProperties(value = {"usuario", "curtidoresPostagem"}, allowSetters = true)
 	private List<Postagem> postagem;
+	
+
+	@ManyToMany
+	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem"})
+	@JoinTable(name="curtidas_postagens",
+	joinColumns = @JoinColumn(name="tb_usuario_id"),
+	inverseJoinColumns = @JoinColumn(name="tb_postagem_id"))
+	private Set<Postagem> postagemCurtidas;
 		
 	
 	
@@ -175,6 +187,17 @@ public class Usuario {
 	public void setEmpresaAtual(String empresaAtual) {
 		this.empresaAtual = empresaAtual;
 	}
+
+	public Set<Postagem> getPostagemCurtidas() {
+		return postagemCurtidas;
+	}
+
+	public void setPostagemCurtidas(Set<Postagem> postagemCurtidas) {
+		this.postagemCurtidas = postagemCurtidas;
+	}
+
+	
+	
 	
 	
 
