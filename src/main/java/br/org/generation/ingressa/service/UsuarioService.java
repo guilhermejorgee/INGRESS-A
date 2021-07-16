@@ -84,6 +84,8 @@ public class UsuarioService {
 				user.get().setTelefone(usuario.get().getTelefone());
 
 				user.get().setSenha(null); // Não retorna a senha no console!
+				
+				user.get().setUsuarioAdmin(usuario.get().getUsuarioAdmin());
 
 				return user;
 			}
@@ -94,20 +96,20 @@ public class UsuarioService {
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 
 		Optional<Usuario> usuarioBase = repository.findById(usuario.getId());
+			
 
-
-			if (usuario.getSenha() == null) {
+		/*	if (usuario.getSenha() == null) {
 				usuario.setSenha(usuarioBase.get().getSenha());
-			} else {
+			} else {*/
 
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				String senhaEncoder = encoder.encode(usuario.getSenha());
 
 				usuario.setSenha(senhaEncoder);
-			}
-			if (usuario.getEmail() == null) {
-				usuario.setEmail(usuarioBase.get().getEmail());
-			} else if (repository.findByEmail(usuario.getEmail()).isPresent()) {
+			
+			/*if (usuario.getEmail() == null) {
+				usuario.setEmail(usuarioBase.get().getEmail());*/
+			if (repository.findByEmail(usuario.getEmail()).isPresent()) {
 
 				if (usuarioBase.get().getEmail().equals(usuario.getEmail())) {
 
@@ -117,7 +119,7 @@ public class UsuarioService {
 
 			}
 			
-			if (usuario.getNome() == null) {
+	/*		if (usuario.getNome() == null) {
 				usuario.setNome(usuarioBase.get().getNome());
 			}
 
@@ -137,8 +139,8 @@ public class UsuarioService {
 				usuario.setFotoPerfil(usuarioBase.get().getFotoPerfil());
 			}
 			if (usuario.getEmpresaAtual() == null) {
-				usuario.setEmpresaAtual(usuarioBase.get().getEmpresaAtual());
-			}
+				usuario.setEmpresaAtual(usuarioBase.get().getEmpresaAtual());*
+			}*/
 
 			return Optional.of(repository.save(usuario));
 
@@ -199,6 +201,33 @@ public class UsuarioService {
 
 		return empregadoresMes;
 
+	}
+	
+	
+	public Optional<Usuario> adicionarCurtidasDoUsuario(Long idUsuario, Long idPostagem) {
+
+	Usuario usuario = repository.findById(idUsuario).orElse(null);
+	
+	Postagem postagem = postagemRepository.findById(idPostagem).orElse(null);
+	
+	usuario.getPostagemCurtidas().add(postagem);
+	
+	return Optional.of(repository.save(usuario));
+	
+		
+	}
+	
+	public Optional<Usuario> removerCurtidasDoUsuario(Long idUsuario, Long idPostagem) {
+
+	Usuario usuario = repository.findById(idUsuario).orElse(null);
+	
+	Postagem postagem = postagemRepository.findById(idPostagem).orElse(null);
+	
+	usuario.getPostagemCurtidas().remove(postagem);
+	
+	return Optional.of(repository.save(usuario));
+	
+		
 	}
 
 }

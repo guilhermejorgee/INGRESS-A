@@ -2,6 +2,7 @@ package br.org.generation.ingressa.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.generation.ingressa.model.Tema;
 import br.org.generation.ingressa.repository.TemaRepository;
-import br.org.generation.ingressa.service.TemaService;
 
+@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/tema")
 public class TemaController {
 
 	@Autowired
 	private TemaRepository repository;
 	
-	@Autowired
-	private TemaService temaRepository;
 
 	@GetMapping
 	public ResponseEntity<List<Tema>> PesquisaTodosOsTemas() {
@@ -81,7 +79,7 @@ public class TemaController {
 
 	@PutMapping
 	public ResponseEntity<Tema> atualizacaoDoTema(@RequestBody Tema tema) {
-		return ResponseEntity.status(HttpStatus.OK).body(temaRepository.atualizarTema(tema));
+		return ResponseEntity.status(HttpStatus.OK).body(repository.save(tema));
 	}
 
 	@DeleteMapping("/{id}")

@@ -1,12 +1,14 @@
 package br.org.generation.ingressa.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Postagem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -50,12 +52,16 @@ public class Postagem {
 	
 
 	@ManyToOne
-	@JsonIgnoreProperties("postagem")
+	@JsonIgnoreProperties(value = "postagem")
 	private Tema tema;
 
 	@ManyToOne
-	@JsonIgnoreProperties("postagem")
+	@JsonIgnoreProperties(value = {"postagem", "postagemCurtidas"})
 	private Usuario usuario;
+	
+	@ManyToMany(mappedBy = "postagemCurtidas")
+	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "fotoPerfil", "empresaAtual", "qtdPostagem"})
+	private Set<Usuario> curtidoresPostagem;
 
 	public long getId() {
 		return id;
@@ -137,5 +143,15 @@ public class Postagem {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public Set<Usuario> getCurtidoresPostagem() {
+		return curtidoresPostagem;
+	}
+
+	public void setCurtidoresPostagem(Set<Usuario> curtidoresPostagem) {
+		this.curtidoresPostagem = curtidoresPostagem;
+	}
+	
+	
 
 }

@@ -20,6 +20,8 @@ public class UserLogin {
 	
 	private boolean usuarioEmpregador;
 	
+	private boolean usuarioAdmin;
+	
 	
 
 	public long getId() {
@@ -93,6 +95,15 @@ public class UserLogin {
 	public void setEmpresaAtual(String empresaAtual) {
 		this.empresaAtual = empresaAtual;
 	}
+
+	public boolean isUsuarioAdmin() {
+		return usuarioAdmin;
+	}
+
+	public void setUsuarioAdmin(boolean usuarioAdmin) {
+		this.usuarioAdmin = usuarioAdmin;
+	}
+	
 	
 	
 	
