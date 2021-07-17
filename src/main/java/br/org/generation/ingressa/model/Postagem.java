@@ -3,6 +3,7 @@ package br.org.generation.ingressa.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Postagem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -59,7 +60,7 @@ public class Postagem {
 	@JsonIgnoreProperties(value = {"postagem", "postagemCurtidas"})
 	private Usuario usuario;
 	
-	@ManyToMany(mappedBy = "postagemCurtidas")
+	@ManyToMany(mappedBy = "postagemCurtidas", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "fotoPerfil", "empresaAtual", "qtdPostagem"})
 	private Set<Usuario> curtidoresPostagem;
 

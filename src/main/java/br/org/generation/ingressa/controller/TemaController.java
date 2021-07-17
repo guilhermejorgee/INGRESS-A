@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.generation.ingressa.model.Tema;
 import br.org.generation.ingressa.repository.TemaRepository;
+import br.org.generation.ingressa.service.TemaService;
 
 @CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RestController
@@ -26,6 +27,9 @@ public class TemaController {
 
 	@Autowired
 	private TemaRepository repository;
+	
+	@Autowired
+	private TemaService temaService;
 	
 
 	@GetMapping
@@ -79,12 +83,12 @@ public class TemaController {
 
 	@PutMapping
 	public ResponseEntity<Tema> atualizacaoDoTema(@RequestBody Tema tema) {
-		return ResponseEntity.status(HttpStatus.OK).body(repository.save(tema));
+		return ResponseEntity.status(HttpStatus.OK).body(temaService.atualizarTema(tema));
 	}
 
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
-		repository.deleteById(id);
+		temaService.deletarTema(id);
 	}
 
 }

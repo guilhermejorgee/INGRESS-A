@@ -23,126 +23,133 @@ import br.org.generation.ingressa.repository.UsuarioRepository;
 
 @Service
 public class PostagemService {
-	
+
 	@Autowired
 	private PostagemRepository postagemRepository;
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
-	
-	
-	
-	
+
 	public Postagem verificacaoPostagem(Postagem postagem) {
-		
+
 		Optional<Usuario> usuario = usuarioRepository.findById(postagem.getUsuario().getId());
-		
+
 		postagem.setQtCurtidas(0);
-		
+
 		String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
 		String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
 		String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
 		String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
 		postagem.setTexto(postagemComDestqueDois);
-		
-			
-		
-		if(usuario.get().getUsuarioEmpregador() == true) {
+
+		if (usuario.get().getUsuarioEmpregador() == true) {
 			return postagemRepository.save(postagem);
-		}
-		else {
-			if(postagem.getCargo() != null) {
+		} else {
+			if (postagem.getCargo() != null) {
 				return null;
-			}
-			else {
+			} else {
 				return postagemRepository.save(postagem);
 			}
 		}
 
 	}
-	
+
 	public Postagem atualizarPostagem(Postagem postagem) {
-		
-	Optional<Postagem> postagemBase = postagemRepository.findById(postagem.getId());
-	
-	Optional<Usuario> usuario = usuarioRepository.findById(postagem.getUsuario().getId());
-	
-	
-	if(postagemBase.isPresent()) {
-		
-		
-		
-		if((postagemBase.get().getUsuario().getId() == postagem.getUsuario().getId()) || postagem.getUsuario().getUsuarioAdmin() == true) {
-			
-			postagem.setDataDePostagem(postagemBase.get().getDataDePostagem());	
-			
-			postagem.setUsuario(postagemBase.get().getUsuario());
-			
-			if(postagem.getQtCurtidas() == null) {
-				postagem.setQtCurtidas(postagemBase.get().getQtCurtidas());
+
+		Optional<Postagem> postagemBase = postagemRepository.findById(postagem.getId());
+
+		Optional<Usuario> usuario = usuarioRepository.findById(postagem.getUsuario().getId());
+
+		if (postagemBase.isPresent()) {
+
+			if ((postagemBase.get().getUsuario().getId() == postagem.getUsuario().getId())
+					|| postagem.getUsuario().getUsuarioAdmin() == true) {
+
+				postagem.setDataDePostagem(postagemBase.get().getDataDePostagem());
+
+				postagem.setUsuario(postagemBase.get().getUsuario());
+
+				postagem.setTema(postagemBase.get().getTema());
+
+				if (postagem.getQtCurtidas() == null) {
+					postagem.setQtCurtidas(postagemBase.get().getQtCurtidas());
+				} else {
+					return null;
+				}
+
+				if (postagem.getRegiao() == null) {
+					postagem.setRegiao(postagemBase.get().getRegiao());
+				} else {
+					if (usuario.get().getUsuarioEmpregador() == true || usuario.get().getUsuarioAdmin() == true) {
+						postagem.setRegiao(postagem.getRegiao());
+					} else {
+						return null;
+					}
+				}
+				if (postagem.getCargo() == null) {
+					postagem.setCargo(postagemBase.get().getCargo());
+				} else {
+					if (usuario.get().getUsuarioEmpregador() == true || usuario.get().getUsuarioAdmin() == true) {
+						postagem.setCargo(postagem.getCargo());
+					} else {
+						return null;
+					}
+				}
+				if (postagem.getTitulo() == null) {
+					postagem.setTitulo(postagemBase.get().getTitulo());
+				}
+				if (postagem.getTexto() == null) {
+					postagem.setTexto(postagemBase.get().getTexto());
+				} else {
+					String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
+					String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
+					String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
+					String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
+					postagem.setTexto(postagemComDestqueDois);
+				}
+				if (postagem.getMidia() == null) {
+					postagem.setMidia(postagemBase.get().getMidia());
+				}
+
+				return postagemRepository.save(postagem);
+
 			}
+
 			else {
+
 				return null;
 			}
-			
-	
-			if(postagem.getRegiao() == null) {
-				postagem.setRegiao(postagemBase.get().getRegiao());
-			}
-			else {
-				if(usuario.get().getUsuarioEmpregador() == true || usuario.get().getUsuarioAdmin() == true) {
-					postagem.setRegiao(postagem.getRegiao());
-				}
-				else {
-					return null;
-				}
-			}
-			if(postagem.getCargo() == null) {
-				postagem.setCargo(postagemBase.get().getCargo());
-			}
-			else {
-				if(usuario.get().getUsuarioEmpregador() == true || usuario.get().getUsuarioAdmin() == true) {
-					postagem.setCargo(postagem.getCargo());
-				}
-				else {
-					return null;
-				}
-			}
-			if(postagem.getTitulo() == null) {
-				postagem.setTitulo(postagemBase.get().getTitulo());
-			}
-			if(postagem.getTexto() == null) {
-				postagem.setTexto(postagemBase.get().getTexto());
-			}
-			else {
-				String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
-				String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
-				String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
-				String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
-				postagem.setTexto(postagemComDestqueDois);
-			}
-			if(postagem.getMidia() == null) {
-				postagem.setMidia(postagemBase.get().getMidia());
-			}
-							
-			
-			return postagemRepository.save(postagem);
-						
-			
+
 		}
-		
-		else {
-			
-			 return null;
+
+		return null;
+
+	}
+
+	public void deletarPostagem(long id) {
+
+		List<Usuario> usuarios = usuarioRepository.findAll();
+
+		Postagem postagemBase = postagemRepository.findById(id).orElse(null);
+
+		for (Usuario usuario : usuarios) {
+
+			for (Postagem postagem : usuario.getPostagemCurtidas()) {
+				
+				if (postagem.getId() == id) {
+
+					usuario.getPostagemCurtidas().remove(postagemBase);
+					usuarioRepository.save(usuario);
+
+				}
+
+			}
+
 		}
-		
+
+		postagemRepository.deleteById(id);
+
 	}
-	
-	return null;
-		
-	}
-	
 
 	public Postagem curtir(Long id) {
 
@@ -170,65 +177,54 @@ public class PostagemService {
 
 		return (postagemRepository.save(postagem));
 	}
-	
+
 	public LocalDate convertToLocalDate(Date dateToConvert) {
-	    return LocalDate.ofInstant(
-	      dateToConvert.toInstant(), ZoneId.systemDefault());
+		return LocalDate.ofInstant(dateToConvert.toInstant(), ZoneId.systemDefault());
 	}
-	
-	public List<Postagem> postagensEmAltaSemana(){
-		
-		
+
+	public List<Postagem> postagensEmAltaSemana() {
+
 		List<Postagem> postagens = postagemRepository.postagensComuns();
-		
+
 		List<Postagem> postagensSemana = new ArrayList<Postagem>();
-		
-		
+
 		for (Postagem postagem : postagens) {
-			
-			Date dataPostagem =  postagem.getDataDePostagem();
-					
-								
+
+			Date dataPostagem = postagem.getDataDePostagem();
+
 			int data = Period.between(convertToLocalDate(dataPostagem), LocalDate.now()).getDays();
-			if(data < 7) {
+			if (data < 7) {
 				postagensSemana.add(postagem);
 			}
-				
-			
+
 		}
-		
+
 		Collections.sort(postagensSemana, Collections.reverseOrder(Comparator.comparing(Postagem::getQtCurtidas)));
-		
 
 		return postagensSemana;
 	}
-	
-	
-/*	public List<Postagem> postagensEmAlta() {
-		
-		List<Postagem> postagens = postagemRepository.pesquisaPostagensEmAlta();
-		
-		Collections.sort(postagens, Collections.reverseOrder(Comparator.comparing(Postagem::getQtCurtidas)));
-		
-		return postagens;
-		
-	}*/
+
+	/*
+	 * public List<Postagem> postagensEmAlta() {
+	 * 
+	 * List<Postagem> postagens = postagemRepository.pesquisaPostagensEmAlta();
+	 * 
+	 * Collections.sort(postagens,
+	 * Collections.reverseOrder(Comparator.comparing(Postagem::getQtCurtidas)));
+	 * 
+	 * return postagens;
+	 * 
+	 * }
+	 */
 
 	private Postagem buscarPostagemPeloId(Long id) {
 
-
 		try {
-			return postagemRepository.findById(id).orElseThrow();	
-		}
-		catch(NoSuchElementException e) {
-			throw new ResponseStatusException(
-			          HttpStatus.BAD_REQUEST, "", e);
+			return postagemRepository.findById(id).orElseThrow();
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "", e);
 		}
 
-		
 	}
-	
-	
 
-	
 }

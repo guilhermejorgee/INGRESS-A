@@ -96,6 +96,8 @@ public class UsuarioService {
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 
 		Optional<Usuario> usuarioBase = repository.findById(usuario.getId());
+		
+		usuario.setPostagem(usuarioBase.get().getPostagem());
 			
 
 		/*	if (usuario.getSenha() == null) {
@@ -106,6 +108,7 @@ public class UsuarioService {
 				String senhaEncoder = encoder.encode(usuario.getSenha());
 
 				usuario.setSenha(senhaEncoder);
+				
 			
 			/*if (usuario.getEmail() == null) {
 				usuario.setEmail(usuarioBase.get().getEmail());*/
@@ -144,6 +147,21 @@ public class UsuarioService {
 
 			return Optional.of(repository.save(usuario));
 
+	}
+	
+	public void deletarUsuario(long id) {
+		
+		//Usuario usuarioBase = repository.findById(id).orElse(null);
+		
+		List<Postagem> postagens = postagemRepository.postagemPorIdUsuario(id);
+		
+		for (Postagem postagem : postagens) {
+
+			postagemRepository.deleteById(postagem.getId());
+		}		
+		
+		repository.deleteById(id);
+		
 	}
 
 	public List<Usuario> maiorQtdDePostagens() {
