@@ -28,6 +28,12 @@ public interface PostagemRepository extends JpaRepository <Postagem, Long> {
 	@Query(value = "select * from tb_postagem where usuario_id = :id", nativeQuery = true)
 	public List<Postagem> postagemPorIdUsuario(@Param("id") long id); //pesquisar postagens por id do usuario
 	
+	@Query(value = "select * from tb_postagem where cargo is null and usuario_id = :id", nativeQuery = true)
+	public List<Postagem> postagemComunsPorIdUsuario(@Param("id") long id);
+	
+	@Query(value = "select * from tb_postagem where cargo is not null and usuario_id = :id", nativeQuery = true)
+	public List<Postagem> postagemVagasPorIdUsuario(@Param("id") long id);
+	
 	@Query(value = "select * from tb_postagem inner join tb_usuario on tb_usuario.id = tb_postagem.usuario_id where nome like %:pesquisa% or palavra_chave email %:pesquisa%", nativeQuery = true)
 	public List<Postagem> postagemPorNomeEmailUsuario(@Param("pesquisa") String pesquisa); //pesquisar postagens por nome e email
 	

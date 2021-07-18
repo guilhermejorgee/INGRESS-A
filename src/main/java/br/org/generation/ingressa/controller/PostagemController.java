@@ -65,10 +65,27 @@ public class PostagemController {
 		return ResponseEntity.ok(repository.findAllByCargoContainingIgnoreCase(cargo));
 	}
 	
+	
+	@GetMapping("/comum/usuario/{id}")
+	public ResponseEntity<List<Postagem>> BuscarPorComumDoUsuario(@PathVariable long id) {
+		return ResponseEntity.ok(repository.postagemComunsPorIdUsuario(id));
+	}
+	
+	@GetMapping("/vaga/usuario/{id}")
+	public ResponseEntity<List<Postagem>> BuscarPorVagaDoUsuario(@PathVariable long id) {
+		return ResponseEntity.ok(repository.postagemVagasPorIdUsuario(id));
+	}
+	
 	@GetMapping("usuario/{id}")
 	public ResponseEntity<List<Postagem>> postagemPorId(@PathVariable long id){
 		return ResponseEntity.ok(repository.postagemPorIdUsuario(id));
 	}
+	
+	@GetMapping("/usuario/{idUsuario}/tema/{idTema}")
+	public ResponseEntity<List<Postagem>> postagemDoUsuarioPorTema(@PathVariable long idUsuario, @PathVariable long idTema){
+		return ResponseEntity.ok(postagemService.temaPostagemUsuario(idUsuario, idTema));
+	}
+	
 
 	@PostMapping
 	public ResponseEntity<Postagem> fazerPostagem(@RequestBody Postagem postagem) {

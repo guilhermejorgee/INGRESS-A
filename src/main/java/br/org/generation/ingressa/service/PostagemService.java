@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.org.generation.ingressa.model.Postagem;
+import br.org.generation.ingressa.model.Tema;
 import br.org.generation.ingressa.model.Usuario;
 import br.org.generation.ingressa.repository.PostagemRepository;
+import br.org.generation.ingressa.repository.TemaRepository;
 import br.org.generation.ingressa.repository.UsuarioRepository;
 
 @Service
@@ -29,6 +31,9 @@ public class PostagemService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private TemaRepository temaRepository;
 
 	public Postagem verificacaoPostagem(Postagem postagem) {
 
@@ -70,6 +75,8 @@ public class PostagemService {
 				postagem.setUsuario(postagemBase.get().getUsuario());
 
 				postagem.setTema(postagemBase.get().getTema());
+				
+				postagem.setCurtidoresPostagem(postagemBase.get().getCurtidoresPostagem());
 
 				if (postagem.getQtCurtidas() == null) {
 					postagem.setQtCurtidas(postagemBase.get().getQtCurtidas());
@@ -226,5 +233,21 @@ public class PostagemService {
 		}
 
 	}
+	
+	public List<Postagem> temaPostagemUsuario(long idUsuario, long idTema){
+		
+		Tema tema = temaRepository.findById(idTema).orElse(null);
+		
+		List<Postagem> postagemUsuario = new ArrayList<Postagem>();
+		
+		for(Postagem postagem: tema.getPostagem()) {
+			if(postagem.getUsuario().getId() == idUsuario) {
+				postagemUsuario.add(postagem);
+			}
+		}
+		
+		return postagemUsuario;
+	}
+	
 
 }
