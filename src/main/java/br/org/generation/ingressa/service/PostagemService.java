@@ -43,8 +43,8 @@ public class PostagemService {
 
 		String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
 		String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
-		String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
-		String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
+		String postagemComDestaqueUm = postagemConvertLinha.replace("<d>", "<strong>");
+		String postagemComDestqueDois = postagemComDestaqueUm.replace("</d>", "</strong>");
 		postagem.setTexto(postagemComDestqueDois);
 
 		if (usuario.get().getUsuarioEmpregador() == true) {
@@ -64,6 +64,8 @@ public class PostagemService {
 		Optional<Postagem> postagemBase = postagemRepository.findById(postagem.getId());
 
 		Optional<Usuario> usuario = usuarioRepository.findById(postagem.getUsuario().getId());
+		
+		Optional<Tema> temaNovo = temaRepository.findById(postagem.getTema().getId());
 
 		if (postagemBase.isPresent()) {
 
@@ -73,8 +75,14 @@ public class PostagemService {
 				postagem.setDataDePostagem(postagemBase.get().getDataDePostagem());
 
 				postagem.setUsuario(postagemBase.get().getUsuario());
-
-				postagem.setTema(postagemBase.get().getTema());
+				
+				if(postagem.getTema().getId() == postagemBase.get().getTema().getId()) {
+					postagem.setTema(postagemBase.get().getTema());
+				}
+				else {
+					postagem.setTema(temaNovo.get());
+				}
+				
 				
 				postagem.setCurtidoresPostagem(postagemBase.get().getCurtidoresPostagem());
 
@@ -110,8 +118,8 @@ public class PostagemService {
 				} else {
 					String postagemConvertEspaco = postagem.getTexto().replace(" ", "&nbsp;");
 					String postagemConvertLinha = postagemConvertEspaco.replace("\n", "<br>");
-					String postagemComDestaqueUm = postagemConvertLinha.replace("<destacar>", "<strong>");
-					String postagemComDestqueDois = postagemComDestaqueUm.replace("</destacar>", "</strong>");
+					String postagemComDestaqueUm = postagemConvertLinha.replace("<d>", "<strong>");
+					String postagemComDestqueDois = postagemComDestaqueUm.replace("</d>", "</strong>");
 					postagem.setTexto(postagemComDestqueDois);
 				}
 				if (postagem.getMidia() == null) {

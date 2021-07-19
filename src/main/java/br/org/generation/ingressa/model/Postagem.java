@@ -61,7 +61,7 @@ public class Postagem {
 	private Usuario usuario;
 	
 	@ManyToMany(mappedBy = "postagemCurtidas", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "fotoPerfil", "empresaAtual", "qtdPostagem"})
+	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "empresaAtual", "qtdPostagem"})
 	private Set<Usuario> curtidoresPostagem;
 
 	public long getId() {

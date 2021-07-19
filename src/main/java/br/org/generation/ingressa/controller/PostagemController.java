@@ -59,6 +59,18 @@ public class PostagemController {
 	public ResponseEntity<List<Postagem>> buscarPorRegiao(@PathVariable String regiao) {
 		return ResponseEntity.ok(repository.findAllByRegiaoContainingIgnoreCase(regiao));
 	}
+	
+	@GetMapping("areacargo/{pesquisa}")
+	public ResponseEntity<List<Postagem>> buscarCargoOuArea(@PathVariable String pesquisa){
+		return ResponseEntity.ok(repository.postagemAreaCargo(pesquisa));
+	}
+	
+	@GetMapping("areacargo/{pesquisa}/regiao/{regiao}")
+	public ResponseEntity<List<Postagem>> buscarCargoOuAreaERegiao(@PathVariable String pesquisa, @PathVariable String regiao){
+		return ResponseEntity.ok(repository.postagemAreaCargoRegiao(pesquisa, regiao));
+	}
+	
+
 
 	@GetMapping("/cargo/{cargo}")
 	public ResponseEntity<List<Postagem>> BuscarPorCargo(@PathVariable String cargo) {

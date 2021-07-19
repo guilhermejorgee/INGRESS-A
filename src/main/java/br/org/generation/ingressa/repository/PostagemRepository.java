@@ -34,7 +34,13 @@ public interface PostagemRepository extends JpaRepository <Postagem, Long> {
 	@Query(value = "select * from tb_postagem where cargo is not null and usuario_id = :id", nativeQuery = true)
 	public List<Postagem> postagemVagasPorIdUsuario(@Param("id") long id);
 	
-	@Query(value = "select * from tb_postagem inner join tb_usuario on tb_usuario.id = tb_postagem.usuario_id where nome like %:pesquisa% or palavra_chave email %:pesquisa%", nativeQuery = true)
+	@Query(value = "select * from tb_postagem inner join tb_tema on tb_tema.id = tb_postagem.tema_id where cargo is not null and (lower(cargo) like %:pesquisa% or lower(area) like %:pesquisa%)", nativeQuery = true)
+	public List<Postagem> postagemAreaCargo(@Param("pesquisa") String pesquisa);
+	
+	@Query(value = "select * from tb_postagem inner join tb_tema on tb_tema.id = tb_postagem.tema_id where cargo is not null and (lower(regiao) like %:regiao% and (lower(cargo) like %:pesquisa% or lower(area) like %:pesquisa%))", nativeQuery = true)
+	public List<Postagem> postagemAreaCargoRegiao(@Param("pesquisa") String pesquisa, @Param("regiao") String regiao);
+	
+	@Query(value = "select * from tb_postagem inner join tb_usuario on tb_usuario.id = tb_postagem.usuario_id where nome like %:pesquisa% or email like %:pesquisa%", nativeQuery = true)
 	public List<Postagem> postagemPorNomeEmailUsuario(@Param("pesquisa") String pesquisa); //pesquisar postagens por nome e email
 	
 	@Query(value = "select * from tb_postagem where tema_id = :id", nativeQuery = true)
