@@ -27,6 +27,7 @@ public interface TemaRepository extends JpaRepository<Tema, Long> {
 	@Query(value = "select * from tb_tema where tipo_tema = false", nativeQuery = true)
 	public List<Tema> pesquisaDeTemasDeComuns();
 	
+
 	
 	/*@Query(value = "select * from tb_tema where area like %:pesquisa% || palavra_chave like %:pesquisa% && tipo_tema = true", nativeQuery = true)
 	public List<Tema> pesquisaDeAreasDeVagasEPalavraChave(@Param("pesquisa") String pesquisa);

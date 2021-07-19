@@ -92,7 +92,7 @@ public class UsuarioController {
 	
 	@DeleteMapping("/{id}")
 	public void deletarUsuario(@PathVariable long id){
-		repository.deleteById(id);
+		usuarioService.deletarUsuario(id);
 	}
 	
 	@PutMapping("/adicionarcurtida/{idUsuario}/{idPostagem}")

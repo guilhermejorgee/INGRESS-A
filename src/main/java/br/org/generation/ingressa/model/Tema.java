@@ -19,7 +19,7 @@ import com.sun.istack.NotNull;
 public class Tema {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@NotNull
@@ -32,7 +32,7 @@ public class Tema {
 	@NotNull
 	private Boolean tipoTema;
 	
-	@OneToMany(mappedBy = "tema", cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnoreProperties(value = "tema", allowSetters = true)
 	private List<Postagem> postagem;
 

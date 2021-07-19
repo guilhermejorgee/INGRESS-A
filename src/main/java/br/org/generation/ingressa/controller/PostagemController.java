@@ -59,16 +59,45 @@ public class PostagemController {
 	public ResponseEntity<List<Postagem>> buscarPorRegiao(@PathVariable String regiao) {
 		return ResponseEntity.ok(repository.findAllByRegiaoContainingIgnoreCase(regiao));
 	}
+	
+	@GetMapping("areacargo/{pesquisa}")
+	public ResponseEntity<List<Postagem>> buscarCargoOuArea(@PathVariable String pesquisa){
+		return ResponseEntity.ok(repository.postagemAreaCargo(pesquisa));
+	}
+	
+	@GetMapping("areacargo/{pesquisa}/regiao/{regiao}")
+	public ResponseEntity<List<Postagem>> buscarCargoOuAreaERegiao(@PathVariable String pesquisa, @PathVariable String regiao){
+		return ResponseEntity.ok(repository.postagemAreaCargoRegiao(pesquisa, regiao));
+	}
+	
+
 
 	@GetMapping("/cargo/{cargo}")
 	public ResponseEntity<List<Postagem>> BuscarPorCargo(@PathVariable String cargo) {
 		return ResponseEntity.ok(repository.findAllByCargoContainingIgnoreCase(cargo));
 	}
 	
+	
+	@GetMapping("/comum/usuario/{id}")
+	public ResponseEntity<List<Postagem>> BuscarPorComumDoUsuario(@PathVariable long id) {
+		return ResponseEntity.ok(repository.postagemComunsPorIdUsuario(id));
+	}
+	
+	@GetMapping("/vaga/usuario/{id}")
+	public ResponseEntity<List<Postagem>> BuscarPorVagaDoUsuario(@PathVariable long id) {
+		return ResponseEntity.ok(repository.postagemVagasPorIdUsuario(id));
+	}
+	
 	@GetMapping("usuario/{id}")
 	public ResponseEntity<List<Postagem>> postagemPorId(@PathVariable long id){
 		return ResponseEntity.ok(repository.postagemPorIdUsuario(id));
 	}
+	
+	@GetMapping("/usuario/{idUsuario}/tema/{idTema}")
+	public ResponseEntity<List<Postagem>> postagemDoUsuarioPorTema(@PathVariable long idUsuario, @PathVariable long idTema){
+		return ResponseEntity.ok(postagemService.temaPostagemUsuario(idUsuario, idTema));
+	}
+	
 
 	@PostMapping
 	public ResponseEntity<Postagem> fazerPostagem(@RequestBody Postagem postagem) {
@@ -115,7 +144,7 @@ public class PostagemController {
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
 		
-		repository.deleteById(id);
+		postagemService.deletarPostagem(id);
 
 	}
 }

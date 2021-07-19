@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Usuario {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@NotNull
@@ -68,13 +68,13 @@ public class Usuario {
 	private int qtdPostagem;
 	
 	
-	@OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnoreProperties(value = {"usuario", "curtidoresPostagem"}, allowSetters = true)
 	private List<Postagem> postagem;
 	
 
 	@ManyToMany
-	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem"})
+	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem"},  allowSetters = true)
 	@JoinTable(name="curtidas_postagens",
 	joinColumns = @JoinColumn(name="tb_usuario_id"),
 	inverseJoinColumns = @JoinColumn(name="tb_postagem_id"))
@@ -195,6 +195,9 @@ public class Usuario {
 	public void setPostagemCurtidas(Set<Postagem> postagemCurtidas) {
 		this.postagemCurtidas = postagemCurtidas;
 	}
+
+	
+	
 
 	
 	
