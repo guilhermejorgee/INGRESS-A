@@ -1,6 +1,7 @@
 package br.org.generation.ingressa.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,12 +59,16 @@ public class Postagem {
 	private Tema tema;
 
 	@ManyToOne
-	@JsonIgnoreProperties(value = {"postagem", "postagemCurtidas"})
+	@JsonIgnoreProperties(value = {"postagem", "postagemCurtidas", "comentarios"})
 	private Usuario usuario;
 	
 	@ManyToMany(mappedBy = "postagemCurtidas", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "empresaAtual", "qtdPostagem"})
 	private Set<Usuario> curtidoresPostagem;
+	
+	@OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = {"postagem"})
+	private List<Comentarios> comentarios;
 
 	public long getId() {
 		return id;
@@ -152,6 +158,16 @@ public class Postagem {
 	public void setCurtidoresPostagem(Set<Usuario> curtidoresPostagem) {
 		this.curtidoresPostagem = curtidoresPostagem;
 	}
+
+	public List<Comentarios> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentarios> comentarios) {
+		this.comentarios = comentarios;
+	}
+	
+	
 	
 	
 
