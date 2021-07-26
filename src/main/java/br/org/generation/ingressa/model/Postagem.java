@@ -63,7 +63,7 @@ public class Postagem {
 	private Usuario usuario;
 	
 	@ManyToMany(mappedBy = "postagemCurtidas", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "empresaAtual", "qtdPostagem"})
+	@JsonIgnoreProperties(value = {"postagemCurtidas", "postagem", "email", "dataNascimento", "senha", "usuarioEmpregador", "descSobre", "telefone", "empresaAtual", "qtdPostagem", "comentarios"})
 	private Set<Usuario> curtidoresPostagem;
 	
 	@OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)

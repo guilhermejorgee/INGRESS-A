@@ -73,14 +73,14 @@ public class Usuario {
 	
 
 	@ManyToMany
-	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem"},  allowSetters = true)
+	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem", "comentarios"},  allowSetters = true)
 	@JoinTable(name="curtidas_postagens",
 	joinColumns = @JoinColumn(name="tb_usuario_id"),
 	inverseJoinColumns = @JoinColumn(name="tb_postagem_id"))
 	private Set<Postagem> postagemCurtidas;
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties(value = "usuario")
+	@JsonIgnoreProperties(value = "usuario", allowSetters = true)
 	private List<Comentarios> comentarios;
 		
 	

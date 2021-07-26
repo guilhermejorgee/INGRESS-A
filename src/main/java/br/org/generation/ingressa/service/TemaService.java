@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import br.org.generation.ingressa.model.Postagem;
 import br.org.generation.ingressa.model.Tema;
+import br.org.generation.ingressa.model.Usuario;
 import br.org.generation.ingressa.repository.PostagemRepository;
 import br.org.generation.ingressa.repository.TemaRepository;
+import br.org.generation.ingressa.repository.UsuarioRepository;
 
 @Service
 public class TemaService {
@@ -20,6 +22,9 @@ public class TemaService {
 	
 	@Autowired
 	PostagemRepository postagemRepository;
+	
+	@Autowired
+	UsuarioRepository usuarioRepository;
 	
 	public Tema atualizarTema(Tema tema) {
 		
@@ -37,12 +42,42 @@ public class TemaService {
 		
 		
 		List<Postagem> postagens = postagemRepository.postagemPorIdTema(id);
-		
+			
 
 		for (Postagem postagem : postagens) {
-
+				
 			
-			postagemRepository.deleteById(postagem.getId());
+			for(Usuario usuario: postagem.getCurtidoresPostagem()) {
+				
+				for(Postagem postagemUsuario: usuario.getPostagemCurtidas()) {
+					
+					if(postagemUsuario.getId() == postagem.getId()) {
+						usuario.getPostagemCurtidas().remove(postagem);
+						postagem.getCurtidoresPostagem().remove(usuario);
+						usuarioRepository.save(usuario);
+						postagemRepository.save(postagem);
+					}
+					
+				}
+				
+				//if(postagem.getId() == usuario)
+				//usuario.getPostagemCurtidas().remove(postagem);
+				//usuarioRepository.save(usuario);
+				
+				//postagem.getCurtidoresPostagem().remove(usuario);
+				
+			}
+			
+			//Usuario usuario = usuarioRepository.getById(postagem.getUsuario().getId());
+			
+			//usuario.getPostagem().remove(postagem);
+			
+			//usuarioRepository.save(usuario);
+			
+			//postagemRepository.save(postagem);
+			
+			//postagemRepository.deleteById(postagem.getId());				
+		
 		}
 		
 				

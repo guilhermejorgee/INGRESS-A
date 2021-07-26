@@ -98,6 +98,8 @@ public class UsuarioService {
 		Optional<Usuario> usuarioBase = repository.findById(usuario.getId());
 
 		usuario.setPostagem(usuarioBase.get().getPostagem());
+		
+		usuario.setComentarios(usuarioBase.get().getComentarios());
 
 		if (usuario.getSenha() == null) {
 					
@@ -223,6 +225,10 @@ public class UsuarioService {
 		Usuario usuario = repository.findById(idUsuario).orElse(null);
 
 		Postagem postagem = postagemRepository.findById(idPostagem).orElse(null);
+		
+/*		postagem.setComentarios(postagem.getComentarios());
+		
+		postagemRepository.save(postagem);*/
 
 		usuario.getPostagemCurtidas().add(postagem);
 
@@ -236,6 +242,10 @@ public class UsuarioService {
 
 		Postagem postagem = postagemRepository.findById(idPostagem).orElse(null);
 
+/*		postagem.setComentarios(postagem.getComentarios());
+		
+		postagemRepository.save(postagem);*/
+		
 		usuario.getPostagemCurtidas().remove(postagem);
 
 		return Optional.of(repository.save(usuario));

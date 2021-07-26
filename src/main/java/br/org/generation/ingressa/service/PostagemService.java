@@ -76,15 +76,17 @@ public class PostagemService {
 
 				postagem.setUsuario(postagemBase.get().getUsuario());
 				
+				postagem.setCurtidoresPostagem(postagemBase.get().getCurtidoresPostagem());
+				
+				postagem.setComentarios(postagemBase.get().getComentarios());
+				
 				if(postagem.getTema().getId() == postagemBase.get().getTema().getId()) {
 					postagem.setTema(postagemBase.get().getTema());
 				}
 				else {
 					postagem.setTema(temaNovo.get());
 				}
-				
-				
-				postagem.setCurtidoresPostagem(postagemBase.get().getCurtidoresPostagem());
+					
 
 				if (postagem.getQtCurtidas() == null) {
 					postagem.setQtCurtidas(postagemBase.get().getQtCurtidas());
