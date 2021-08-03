@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,27 +32,26 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@NotNull
+	@NotNull(message = "Nome Obrigatório")
 	@Size(min = 3)
 	private String nome;
 	
-	@NotNull
+	@NotNull(message = "Email Obrigatório")
 	@Email
 	private String email;
 	
-	@NotNull
+	@NotNull(message = "Data de Nascimento Obrigatório")
 	@DateTimeFormat(pattern = "yyyy.MM.dd")
 	private LocalDate dataNascimento;
 	
-	@NotNull
+	@NotNull(message = "Senha Obrigatório")
 	@Size(min = 8)
 	private String senha;
 	
-	@NotNull
+	@NotNull(message = "Tipo de Usuário Obrigatório")
 	private Boolean usuarioEmpregador;
 
-	
-	@Size(max = 255)
+	@Column(columnDefinition = "text")
 	private String descSobre;
 	
 	@Size(max = 11)
@@ -61,7 +61,6 @@ public class Usuario {
 	
 	private Boolean usuarioAdmin;
 	
-	@Size(max = 20)
 	private String empresaAtual;
 	
 	@Transient
@@ -74,11 +73,15 @@ public class Usuario {
 	
 
 	@ManyToMany
-	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem"},  allowSetters = true)
+	@JsonIgnoreProperties(value = {"curtidoresPostagem", "usuario", "regiao", "cargo", "texto", "midia", "qtCurtidas", "tema", "dataDePostagem", "comentarios"},  allowSetters = true)
 	@JoinTable(name="curtidas_postagens",
 	joinColumns = @JoinColumn(name="tb_usuario_id"),
 	inverseJoinColumns = @JoinColumn(name="tb_postagem_id"))
 	private Set<Postagem> postagemCurtidas;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = "usuario", allowSetters = true)
+	private List<Comentarios> comentarios;
 		
 	
 	
@@ -194,6 +197,14 @@ public class Usuario {
 
 	public void setPostagemCurtidas(Set<Postagem> postagemCurtidas) {
 		this.postagemCurtidas = postagemCurtidas;
+	}
+
+	public List<Comentarios> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentarios> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 	
