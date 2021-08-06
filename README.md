@@ -53,7 +53,7 @@ Neste projeto foi utilizado todo conhecimento abordado no bootcamp da Generation
 
 Entre em contato com um dos desenvolvedores para solicitar a chave para ativação das funções administrativas do seu usuário.
 
-Repositório do back-end: https://github.com/guilhermejorgee/Ingressa-FrontEnd
+Repositório do front-end: https://github.com/guilhermejorgee/Ingressa-FrontEnd
 
 <h4>Implementações futuras:</h4>
 
