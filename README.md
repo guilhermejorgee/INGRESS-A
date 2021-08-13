@@ -2,6 +2,8 @@
 
 >Status: Desenvolvimento
 
+>Acesse: https://ingressa.netlify.app/ (Hospedado no Heroku. Caso ele esteja hibernando poderá levar até 1min para fazer o primeiro acesso/cadastro)
+
 <h4>O projeto INGRESS/A surgiu com a proposta de trazer mais oportunidades para as mulheres na área de tecnologia, tendo em 
 vista a desigualdade de gênero presente no mercado de trabalho.
 O projeto aborda a desigualdade de gênero, em específico na falta de inclusão da mulher no mercado de trabalho, busca 
