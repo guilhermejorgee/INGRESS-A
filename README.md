@@ -17,7 +17,7 @@ Neste projeto foi utilizado todo conhecimento abordado no bootcamp da Generation
 <table>
 	<tr>
 		<td>Java</td>
-		<td>Spring</td>
+		<td>Spring Boot</td>
 		<td>Postgres</td>
 		<td>HTML</td>
 		<td>CSS</td>
@@ -27,10 +27,10 @@ Neste projeto foi utilizado todo conhecimento abordado no bootcamp da Generation
   </tr>
 	<tr>
 		<td>16</td>
-		<td>4</td>
+		<td>2.5.3</td>
 		<td>--</td>
 		<td>5</td>
-		<td>4.15</td>
+		<td>3</td>
 		<td>5.*</td>
 		<td>12.0.1</td>
     <td>--</td>
